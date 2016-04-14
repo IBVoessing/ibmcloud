@@ -1,10 +1,10 @@
 {
-  "name": "Connect 2016 Example App",
-  "description": "The most basic app",
+  "name": "eFrontPro",
+  "description": "eFrontPro integration",
   "type": "community_widget",
   "urls": {},
   "payload": {
-    "defId": "Connect 2016 Example App",
+    "defId": "eFrontPro",
     "showInPalette": "true",
     "primaryWidget": "true",
     "modes": "view",
@@ -12,8 +12,8 @@
     "url": "https://apps.collabservnext.com/connections/resources/web/com.ibm.social.urliWidget.web.resources/widget/urlWidget.xml",
     "itemSet": [
       {
-        "value": "https://cdn.rawgit.com/dvdsmpsn/ibm-connect-2016-examples/master/community-app/skeleton.html",
-        "name": "url"]
+        "value": "https://rawgit.com/kstratis/ibmcloud/master/app.html",
+        "name": "url"
       },
       {
         "value": "100%",

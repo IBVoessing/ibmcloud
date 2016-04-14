@@ -9,7 +9,7 @@
     "primaryWidget": "true",
     "modes": "view",
     "themes": "wpthemeThinwpthemeNarrowwpthemeWidewpthemeBanner",
-    "url": "https://apps.collabservnext.com/connections/resources/web/com.ibm.social.urliWidget.web.resources/widget/urlWidget.xml",
+    "url": "https://apps.na.collabserv.com/connections/resources/web/com.ibm.social.urliWidget.web.resources/widget/urlWidget.xml",
     "itemSet": [
       {
         "value": "https://rawgit.com/kstratis/ibmcloud/master/app.html",

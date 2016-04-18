@@ -1,10 +1,10 @@
 {
-  "name": "eFrontPro",
-  "description": "eFrontPro integration",
+  "name": "eFrontPro.v2.0",
+  "description": "eFrontPro integration v2.0",
   "type": "community_widget",
   "urls": {},
   "payload": {
-    "defId": "eFrontPro",
+    "defId": "eFrontPro.v2.0",
     "showInPalette": "true",
     "primaryWidget": "true",
     "modes": "view",

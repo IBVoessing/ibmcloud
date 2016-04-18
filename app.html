@@ -16,7 +16,6 @@
             padding: 2px 4px;
         }
     </style>
-    <script src="https://code.jquery.com/jquery-2.2.3.min.js" integrity="sha256-a23g1Nt4dtEYOj7bR+vTu7+T8VP13humZFBJNIYoEJo=" crossorigin="anonymous"></script>
     <script>
         window.onload = function() {
             document.getElementById("host").innerHTML = location.host;
@@ -31,12 +30,6 @@
                 console.log(e);
             }
             parent.postMessage('appReady', "*");
-        };
-        if (window.jQuery) {
-            console.log('jquery is loaded');
-            // jQuery is loaded
-        } else {
-             console.log('jQuery is not loaded')
         }
     </script>
 

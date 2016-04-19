@@ -1,10 +1,10 @@
 {
-  "name": "eFrontPro.v2.0",
-  "description": "eFrontPro integration v2.0",
+  "name": "eFrontPro.v3.0",
+  "description": "eFrontPro integration v3.0",
   "type": "community_widget",
   "urls": {},
   "payload": {
-    "defId": "eFrontPro.v2.0",
+    "defId": "eFrontPro.v3.0",
     "showInPalette": "true",
     "primaryWidget": "true",
     "modes": "view",
@@ -12,7 +12,7 @@
     "url": "https://apps.na.collabserv.com/connections/resources/web/com.ibm.social.urliWidget.web.resources/widget/urlWidget.xml",
     "itemSet": [
       {
-        "value": "https://rawgit.com/kstratis/ibmcloud/master/app.html",
+        "value": "https://rawgit.com/kstratis/ibmcloud/master/eFront.html",
         "name": "url"
       },
       {

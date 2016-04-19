@@ -54,6 +54,7 @@
         }
         .gotocourseicon{
             margin-top: 7px;
+            margin-left: 2px;
         }
         #efront_data {
             height: auto;
@@ -172,6 +173,11 @@
             display: inline-block;
             vertical-align: middle;
         }
+        .background_class svg path {
+            fill: #6FD57F;
+            fill-opacity: 1;
+        }
+
     </style>
 </head>
 <body>
@@ -454,7 +460,10 @@
             }, function() {
                 var truePercentage = percentage * 100;
                 if (truePercentage == 100) {
+                    element.className += " " + "background_class";
                     circle.setText('✔');
+                    var domel = circle.text;
+                    domel.innerHTML = "<i style='color:white!important;' class='fa fa-check fa-2x'</i>";
                 }
                 else{
                     circle.setText(truePercentage + ' %');

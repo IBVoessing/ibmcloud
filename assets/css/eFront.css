@@ -1,0 +1,219 @@
+#table-scroll::-webkit-scrollbar {
+    width: 8px;
+}
+
+#table-scroll::-webkit-scrollbar-button {
+    width: 8px;
+    height:5px;
+}
+
+#table-scroll::-webkit-scrollbar-track {
+    background:#eee;
+    border: thin solid lightgray;
+    box-shadow: 0 0 3px #dfdfdf inset;
+    border-radius:10px;
+}
+
+#table-scroll::-webkit-scrollbar-thumb {
+    background:#999;
+    border: thin solid gray;
+    border-radius:10px;
+}
+#table-scroll::-webkit-scrollbar-thumb:hover {
+    background:#7d7d7d;
+}
+
+
+
+#table-wrapper {
+    position:relative;
+}
+#table-scroll {
+    max-height:370px;
+    overflow:auto;
+    /*margin-top:20px;*/
+}
+#table-wrapper table thead th .text {
+    position:absolute;
+    top:-20px;
+    z-index:2;
+    height:20px;
+    width:35%;
+    border:1px solid red;
+}
+
+#eFrontColumn{
+    align-items: center !important;
+    vertical-align: middle !important;
+}
+
+
+#efront_root{
+    /*max-width: 350px;*/
+}
+
+.widget-title{
+    color: blue !important;
+}
+
+.gotocourseicon{
+    margin-top: 7px;
+    /*color: #4D82B8;*/
+}
+
+#efront_data {
+    height: auto;
+    width: 100%;
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+a.gotocourse{
+    display: block;
+    /*border: 1px solid #2299DD;*/
+    width: 40px;
+    height: 40px;
+    text-align: center;
+    /*padding: px;*/
+    /*font-size: 3;*/
+    /* line-height: 1.42; */
+    border-radius: 40px;
+    background: white;
+}
+
+a.gotocourse:hover {
+
+    /*background: #E2E0E0;*/
+    /*background: #E4E4E4;*/
+    color: #02CEFF !important;
+    /*border: 1px solid #2299DD;;*/
+
+}
+
+.efront_logo img {
+    margin: 5px;
+    height: 25px;
+    display: block;
+}
+
+table.course_style {
+    max-height: 100px;
+    /*border: 1px solid #4D82B8;*/
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+    /*border-collapse: collapse;*/
+    /*table-layout:fixed;*/
+    width: 100%;
+    /*max-width: 200px;*/
+    /*background-color: #aaa;*/
+}
+
+.course_style > tr:nth-child(even) {
+    background-color: #F8F8F8;
+}
+
+/*.course_style > tr{*/
+    /*text*/
+/*}*/
+
+.course_style > tr > td {
+    padding: 10px;
+    /*padding-left:5px;*/
+    margin:0;
+    /*padding: 0px;*/
+}
+
+.course_style > tr > td.link {
+    /*padding-left:80px;*/
+    /*margin:5px;*/
+    /*padding: 0px;*/
+}
+
+
+
+
+/*tbody.course_style {*/
+    /*background-color: #F1F1F1;*/
+
+/*}*/
+
+#table-wrapper tr:hover {
+    background-color: #c9d9f5 !important;
+}
+
+h2.efront_title {
+    font-size: 24px;
+    padding:0 16px 0 0; /* whatever the dimensions the image needs */
+    display: block;
+}
+
+
+.progressBars{
+    width: 45px;
+}
+
+.progressbar-text{
+    width: 40px;
+    color: black !important;
+}
+
+hr.horizontalRuler{
+    border: 0;
+    height: 1px;
+    background-image: linear-gradient(to right, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0));
+
+}
+
+/*hr.horizontalRuler {
+    padding: 0;
+    border: none;
+    border-top: 1px solid #454545;
+    color: #333;
+    text-align: center;
+}
+hr.horizontalRuler:after {
+    content: "MY TRAINING";
+    display: inline-block;
+    position: relative;
+    top: -0.8em;
+    font-size: inherit;
+    padding: 0 0.30em;
+    background: white;
+    color: black;
+}*/
+
+.errorNodes{
+    border: 1px solid red;
+    padding: 5px;
+}
+
+#headContainer{
+    width: auto;
+    /*border: 1px solid black;*/
+    overflow: hidden; /* will contain if #first is longer than #second */
+}
+
+#title{
+    margin-top: 8px;
+    float:left;
+}
+
+#homebutton{
+    overflow: hidden;
+}
+
+#gohome{
+    float: right;
+    border: 1px solid #999;
+    border-radius: 10px;
+    padding: 8px;
+}
+
+#gohome:hover{
+    color: #02CEFF !important;
+}
+
+#open_book{
+    width: 16px;
+}

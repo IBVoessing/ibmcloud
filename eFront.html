@@ -7,217 +7,133 @@
     <!--<link rel="stylesheet" href="https://rawgit.com/kstratis/ibmcloud/master/assets/css/eFront.css">-->
     <style>
         #table-scroll::-webkit-scrollbar {
-        width: 8px;
+            width: 8px;
         }
-
         #table-scroll::-webkit-scrollbar-button {
-        width: 8px;
-        height:5px;
+            width: 8px;
+            height:5px;
         }
-
         #table-scroll::-webkit-scrollbar-track {
-        background:#eee;
-        border: thin solid lightgray;
-        box-shadow: 0 0 3px #dfdfdf inset;
-        border-radius:10px;
+            background:#eee;
+            border: thin solid lightgray;
+            box-shadow: 0 0 3px #dfdfdf inset;
+            border-radius:10px;
         }
-
         #table-scroll::-webkit-scrollbar-thumb {
-        background:#999;
-        border: thin solid gray;
-        border-radius:10px;
+            background:#999;
+            border: thin solid gray;
+            border-radius:10px;
         }
         #table-scroll::-webkit-scrollbar-thumb:hover {
-        background:#7d7d7d;
+            background:#7d7d7d;
         }
-
-
-
         #table-wrapper {
-        position:relative;
+            position:relative;
         }
         #table-scroll {
-        max-height:370px;
-        overflow:auto;
-        /*margin-top:20px;*/
+            max-height:370px;
+            overflow:auto;
         }
         #table-wrapper table thead th .text {
-        position:absolute;
-        top:-20px;
-        z-index:2;
-        height:20px;
-        width:35%;
-        border:1px solid red;
+            position:absolute;
+            top:-20px;
+            z-index:2;
+            height:20px;
+            width:35%;
+            border:1px solid red;
         }
-
         #eFrontColumn{
-        align-items: center !important;
-        vertical-align: middle !important;
+            align-items: center !important;
+            vertical-align: middle !important;
         }
-
-
         #efront_root{
         /*max-width: 350px;*/
         }
-
         .widget-title{
-        color: blue !important;
+            color: blue !important;
         }
-
         .gotocourseicon{
-            margin-top: 9px;
+            margin-top: 7px;
         }
-
         #efront_data {
-        height: auto;
-        width: 100%;
-        margin-top: 5px;
-        margin-bottom: 5px;
+            height: auto;
+            width: 100%;
+            margin-top: 5px;
+            margin-bottom: 5px;
         }
-
         a.gotocourse{
             color: #1970b0;
-
-
             transition: all .1s ease-in-out;
-
-        display: block;
-        /*border: 1px solid #2299DD;*/
-        width: 40px;
-        height: 40px;
-        text-align: center;
-        /*padding: px;*/
-        /*font-size: 3;*/
-        /* line-height: 1.42; */
-        border-radius: 40px;
-        background: white;
+            display: block;
+            width: 40px;
+            height: 40px;
+            text-align: center;
+            border-radius: 40px;
+            background: white;
         }
-
         a.gotocourse:hover {
             color: #02CEFF !important;
             transform: scale(1.2);
-        /*background: #E2E0E0;*/
-        /*background: #E4E4E4;*/
-
-        /*border: 1px solid #2299DD;;*/
-
         }
-
         .efront_logo img {
-        margin: 5px;
-        height: 25px;
-        display: block;
+            margin: 5px;
+            height: 25px;
+            display: block;
         }
-
         table.course_style {
-        max-height: 100px;
-        /*border: 1px solid #4D82B8;*/
-        -webkit-border-radius: 3px;
-        -moz-border-radius: 3px;
-        border-radius: 3px;
-        /*border-collapse: collapse;*/
-        /*table-layout:fixed;*/
-        width: 100%;
-        /*max-width: 200px;*/
-        /*background-color: #aaa;*/
+            max-height: 100px;
+            -webkit-border-radius: 3px;
+            -moz-border-radius: 3px;
+            border-radius: 3px;
+            width: 100%;
         }
-
         .course_style > tr:nth-child(even) {
-        background-color: #F8F8F8;
+            background-color: #F8F8F8;
         }
-
-        /*.course_style > tr{*/
-        /*text*/
-        /*}*/
-
         .course_style > tr > td {
-        padding: 10px;
-        /*padding-left:5px;*/
-        margin:0;
-        /*padding: 0px;*/
+            padding: 10px;
+            margin:0;
         }
-
         .course_style > tr > td.link {
-        /*padding-left:80px;*/
-        /*margin:5px;*/
-        /*padding: 0px;*/
         }
-
-
-
-
-        /*tbody.course_style {*/
-        /*background-color: #F1F1F1;*/
-
-        /*}*/
-
         #table-wrapper tr:hover {
-        background-color: #c9d9f5 !important;
+            background-color: #c9d9f5 !important;
         }
-
         h2.efront_title {
-        font-size: 24px;
-        padding:0 16px 0 0; /* whatever the dimensions the image needs */
-        display: block;
+            font-size: 24px;
+            padding:0 16px 0 0; /* whatever the dimensions the image needs */
+            display: block;
         }
-
-
         .progressBars{
-        width: 45px;
+            width: 45px;
         }
-
         .progressbar-text{
-        width: 40px;
-        color: black !important;
+            width: 40px;
+            color: black !important;
+            top: 52%!important;
+            left: 52%!important;
         }
-
         hr.horizontalRuler{
-        border: 0;
-        height: 1px;
-        background-image: linear-gradient(to right, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0));
-
+            border: 0;
+            height: 1px;
+            background-image: linear-gradient(to right, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0));
         }
-
-        /*hr.horizontalRuler {
-        padding: 0;
-        border: none;
-        border-top: 1px solid #454545;
-        color: #333;
-        text-align: center;
-        }
-        hr.horizontalRuler:after {
-        content: "MY TRAINING";
-        display: inline-block;
-        position: relative;
-        top: -0.8em;
-        font-size: inherit;
-        padding: 0 0.30em;
-        background: white;
-        color: black;
-        }*/
-
         .errorNodes{
-        border: 1px solid red;
-        padding: 5px;
+            border: 1px solid red;
+            padding: 5px;
         }
-
         #headContainer{
-        width: auto;
-        /*border: 1px solid black;*/
-        overflow: hidden; /* will contain if #first is longer than #second */
+            width: auto;
+            overflow: hidden; /* will contain if #first is longer than #second */
         }
-
         #title{
-        margin-top: 8px;
-        float:left;
+            margin-top: 8px;
+            float:left;
         }
-
         #homebutton{
             overflow: hidden;
             margin-top: 8px;
-            /*vertical-align: middle !important;*/
         }
-
         #gohome{
             color: #1970b0;
             float: right;
@@ -225,30 +141,37 @@
             border-radius: 10px;
             padding: 8px;
         }
-
         #gohome:hover{
             color: #02CEFF !important;
         }
-
         #open_book{
-        width: 16px;
+            width: 16px;
         }
-
-
         body {
-            font-family: Arial, Helvetica, sans-serif;
+            font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+            -webkit-font-smoothing: antialiased;
             font-style: normal;
             font-variant: normal;
             line-height: 1.5;
-            /*font-size: 65%;*/
+            font-size: 75%;
         }
-
         #headContainer{
             text-align: center;
         }
-
-            /*font: 75%/1.5 Arial, Helvetica, sans-serif;*/
-
+        #c_description{
+            display: inline-block;
+            vertical-align: middle;
+            color: #1970b0;
+        }
+        #c_description:hover{
+            text-decoration: underline;
+            color: #05386b !important;
+        }
+        #c_pic{
+            margin-right: 3px;
+            display: inline-block;
+            vertical-align: middle;
+        }
     </style>
 </head>
 <body>
@@ -300,7 +223,7 @@
 
 
 //        var rootElement = this.iContext.getRootElement(); /* This is the root element our widget will be rendered in */
-        var rootElement = document.getElementById('status');
+        var rootElement = document.getElementById('efront_root');
         /* This is the generic error handling function */
         function errorHandler(errorMsg, spinnerStop){
             if (spinnerStop) standby.hide();
@@ -475,7 +398,7 @@
                 domConstruct.place(table, "efront_data");
                 data.courseList.forEach(function (course) {
                     var courseFullURL = courseURL + course.id;
-                    var columnA = "<tr><td><div id='eFrontColumn'><a title='Open course \"" + course.formatted_name + "\"' target='_blank' href=" + courseFullURL + ">" + "<img src='https://cdn.rawgit.com/kstratis/ibmcloud/master/assets/img/book.svg' width='32' height='32' alt='[eFront Course]' class='FloatLeft'/>&nbsp;<strong>" + course.formatted_name + "</strong></a></td></div>";
+                    var columnA = "<tr><td><div id='eFrontColumn'><a title='Open course \"" + course.formatted_name + "\"' target='_blank' href=" + courseFullURL + ">" + "<img src='https://cdn.rawgit.com/kstratis/ibmcloud/master/assets/img/book.svg' width='32' height='32' alt='[eFront Course]' id='c_pic'/><span id='c_description'><strong>" + course.formatted_name + "&nbsp;</strong></span></div></a></td></div>";
                     var columnB = "<td style='text-align: center;'><div class='progressBars' id='" + course.id + "'><!--<span class='progress_percentage' style='width: 100%; text-align:center;'>N/A YET</span>--></div></td>";
                     var columnC = "<td class='link' align='center'><a title='Open course \"" + course.formatted_name + "\"' target='_blank' href='" + courseFullURL + "' class='gotocourse'><i class='fa fa-arrow-right fa-2x gotocourseicon'></i></a></td></tr>";
                     var columns = columnA + columnB + columnC;
@@ -501,7 +424,7 @@
                 });
             }
             else{ /* In case a user has no courses */
-                var nocoursemsg = domConstruct.toDom("<div class='nocourses' style='display: inline-flex;'><img src='https://cdn.rawgit.com/kstratis/ibmcloud/master/assets/img/noCourses.svg' width='64' height='64' alt='[eFront No Course]' class='FloatLeft' style='margin: auto;'/>&nbsp;<h1 style='text-align: center;color: #454545;'>You don't have any courses yet.</h1></div><div id='fetch' style='text-align: center;'>Go to <a target='_blank' href='" + eFrontFullURL + "/go/catalog/'>eFront</a> and get some now!</div>");
+                var nocoursemsg = domConstruct.toDom("<div class='nocourses' style='display: inline-flex;'><img src='https://cdn.rawgit.com/kstratis/ibmcloud/master/assets/img/noCourses.svg' width='64' height='64' alt='[eFront No Course]' style='margin: auto;'/>&nbsp;<h1 style='text-align: center;color: #454545;'>You don't have any courses yet.</h1></div><div id='fetch' style='text-align: center;'>Go to <a target='_blank' href='" + eFrontFullURL + "/go/catalog/'>eFront</a> and get some now!</div>");
                 domConstruct.place(nocoursemsg, "efront_data");
                 /*console.log('User has no courses');*/
             }

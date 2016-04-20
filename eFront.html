@@ -404,7 +404,7 @@
                 domConstruct.place(table, "efront_data");
                 data.courseList.forEach(function (course) {
                     var courseFullURL = courseURL + course.id;
-                    var columnA = "<tr><td><div id='eFrontColumn'><a title='Open course \"" + course.formatted_name + "\"' target='_blank' href=" + courseFullURL + ">" + "<img src='https://cdn.rawgit.com/kstratis/ibmcloud/master/assets/img/book.svg' width='32' height='32' alt='[eFront Course]' id='c_pic'/><span id='c_description'><strong>" + course.formatted_name + "&nbsp;</strong></span></div></a></td></div>";
+                    var columnA = "<tr><td><div id='eFrontColumn'><a title='Open course \"" + course.formatted_name + "\"' target='_blank' href=" + courseFullURL + ">" + "<img src='https://cdn.rawgit.com/kstratis/ibmcloud/master/assets/img/book.svg' width='32' height='32' alt='[eFront Course]' id='c_pic'/><span id='c_description'><strong>" + course.formatted_name + "</strong></span></div></a></td></div>";
                     var columnB = "<td style='text-align: center;'><div class='progressBars' id='" + course.id + "'><!--<span class='progress_percentage' style='width: 100%; text-align:center;'>N/A YET</span>--></div></td>";
                     var columnC = "<td class='link' align='center'><a title='Open course \"" + course.formatted_name + "\"' target='_blank' href='" + courseFullURL + "' class='gotocourse'><i class='fa fa-arrow-right fa-2x gotocourseicon'></i></a></td></tr>";
                     var columns = columnA + columnB + columnC;

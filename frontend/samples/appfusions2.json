@@ -1,0 +1,31 @@
+{
+  "name": "Connect 2016 Example App 2",
+  "description": "The most basic app 2",
+  "type": "community_widget",
+  "mydata": "efrontproValueup",
+  "urls": {},
+  "payload": {
+    "mydatan": "efrontproValueup2",
+    "defId": "Connect 2016 Example App2 ",
+    "showInPalette": "true",
+    "primaryWidget": "true",
+    "modes": "view",
+    "themes": "wpthemeThinwpthemeNarrowwpthemeWidewpthemeBanner",
+    "url": "https://apps.collabservnext.com/connections/resources/web/com.ibm.social.urliWidget.web.resources/widget/urlWidget.xml",
+    "itemSet": [
+      {
+        "value": "https://cdn.rawgit.com/dvdsmpsn/ibm-connect-2016-examples/master/community-app/skeleton.html",
+        "name": "url"
+      },
+      {
+        "value": "100%",
+        "name": "width"
+      },
+      {
+        "value": "400px",
+        "name": "height"
+      }
+    ]
+  }
+}
+

@@ -2,9 +2,12 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
 var ClientSchema = new Schema({
-    name: String,
-    orgId: Number,
-    
+    orgId: String,
+    efrontHost: String,
+    efrontApiKey: String,
+    UserId: String,
+    displayName: String,
+    email: String
 });
 
-module.exports = mongoose.model('Bear', BearSchema);
+module.exports = mongoose.model('Client', ClientSchema);

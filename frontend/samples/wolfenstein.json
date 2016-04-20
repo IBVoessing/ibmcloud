@@ -1,0 +1,29 @@
+{  
+   "name": "Wolfenstein 3D",
+   "description": "Open-source shooter from idSoftware",
+   "type": "community_widget",
+   "urls": {},
+   "payload": {  
+      "defId": "Wolfenstein 3D",
+      "showInPalette": "true",
+      "primaryWidget": "true",
+      "modes": "view",
+      "themes": "wpthemeThinwpthemeNarrowwpthemeWidewpthemeBanner",
+      "url": "https://apps.collabservnext.com/connections/resources/web/com.ibm.social.urliWidget.web.resources/widget/urlWidget.xml",
+      "itemSet": [  
+         {  
+            "value": "https://cdn.rawgit.com/dvdsmpsn/html5-wolfenstein3D/master/index.html",
+            "name": "url"
+         },
+         {  
+            "value": "100%",
+            "name": "width"
+         },
+         {  
+            "value": "400px",
+            "name": "height"
+         }
+      ]
+   }
+}
+

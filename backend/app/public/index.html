@@ -1,0 +1,612 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>eFrontPro v4.0</title>
+    <link rel="stylesheet" href="css/Font-Awesome-4.6.1/css/font-awesome.min.css">
+    <link rel="stylesheet" href="bower_components/dijit/themes/claro/claro.css">
+    <link rel="stylesheet" href="css/main.css">
+</head>
+<body class="claro">
+
+<!--<p>eFrontPro app running at <code id="host"></code>.</p>-->
+<!--<p> The following context is passed from Communities: </p>-->
+<!--<pre id="contextId"></pre>-->
+<div id="status"></div>
+<div class="efront_container" id="efront_root" style="display: none;">
+    <div id="headContainer">
+        <div id="title">
+            <h2 style="color: #4D82B8;font-weight:500;">My Training&nbsp;
+                <img id="open_book" style="vertical-align: middle;" src="img/open_book_vector.svg"></h2>
+        </div>
+        <div id="button_group">
+            <div id="homebutton"></div>
+            <div id="configbutton"></div>
+        </div>
+    </div>
+    <hr class="horizontalRuler">
+
+
+    <div data-dojo-type="dijit/Dialog" id="myDialog" data-dojo-id="myDialog" data-dojo-props="title: 'Configuration'" style="display: none;">
+        <form data-dojo-type="dijit/form/Form" data-dojo-id="myForm" id="myForm">
+            <!--<script type="dojo/on" data-dojo-event="submit" data-dojo-args="e">-->
+                <!--e.preventDefault(); // prevent the default submit-->
+                <!--if (!myForm.isValid()) {-->
+                    <!--alert('Please fix fields');-->
+                    <!--return;-->
+                <!--}-->
+
+                <!--window.alert("Would submit here via dojo/xhr");-->
+            <!--// xhr.post( {-->
+            <!--//      url: 'foo.com/handler',-->
+            <!--//      content: { field: 'go here' },-->
+            <!--//      handleAs: 'json'-->
+            <!--//      load: function(data){ .. },-->
+            <!--//      error: function(data){ .. }-->
+            <!--//  });-->
+            <!--</script>-->
+            <div class="dijitDialogPaneContentArea">
+                <table>
+                    <tr>
+                        <td style="text-align: right;"><label for="hostname">Hostname: </label></td>
+                        <td><input data-dojo-type="dijit/form/TextBox" data-dojo-props="required:true" type="text" name="hostname" id="hostname" data-dojo-id="hostname"></td>
+                    </tr>
+                    <tr>
+                        <td style="text-align: right;"><label for="apikey">API Key: </label></td>
+                        <td><input data-dojo-type="dijit/form/TextBox" data-dojo-props="required:true" type="text" name="apikey" id="apikey" data-dojo-id="apikey"></td>
+                    </tr>
+                </table>
+            </div>
+            <div class="dijitDialogPaneActionBar">
+                <button id="okButton" data-dojo-type="dijit/form/Button" type="submit">OK</button>
+                <button id="cancelButton" data-dojo-type="dijit/form/Button" type="button" data-dojo-props="onClick:function(){myDialog.hide();}">Cancel</button>
+            </div>
+        </form>
+    </div>
+
+    <!--<div data-dojo-type="dijit/Dialog" data-dojo-id="myDialog" title="Form Dialog"-->
+         <!--execute="alert('submitted w/args:\n' + dojo.toJson(arguments[0], true));">-->
+
+        <!--<div class="dijitDialogPaneContentArea">-->
+            <!--<table>-->
+                <!--<tr>-->
+                    <!--<td><label for="name">Name: </label></td>-->
+                    <!--<td><input data-dojo-type="dijit/form/TextBox" type="text" name="name" id="name"></td>-->
+                <!--</tr>-->
+                <!--<tr>-->
+                    <!--<td><label for="loc">Location: </label></td>-->
+                    <!--<td><input data-dojo-type="dijit/form/TextBox" type="text" name="loc" id="loc"></td>-->
+                <!--</tr>-->
+                <!--<tr>-->
+                    <!--<td><label for="date">Start date: </label></td>-->
+                    <!--<td><input data-dojo-type="dijit/form/DateTextBox" data-dojo-id="myStartDate" onChange="myEndDate.constraints.min = arguments[0];" type="text" name="sdate" id="sdate"></td>-->
+                <!--</tr>-->
+                <!--<tr>-->
+                    <!--<td><label for="date">End date: </label></td>-->
+                    <!--<td><input data-dojo-type="dijit/form/DateTextBox" data-dojo-id="myEndDate" onChange="myStartDate.constraints.max = arguments[0];" type="text" name="edate" id="edate"></td>-->
+                <!--</tr>-->
+                <!--<tr>-->
+                    <!--<td><label for="date">Time: </label></td>-->
+                    <!--<td><input data-dojo-type="dijit/form/TimeTextBox" type="text" name="time" id="time"></td>-->
+                <!--</tr>-->
+                <!--<tr>-->
+                    <!--<td><label for="desc">Description: </label></td>-->
+                    <!--<td><input data-dojo-type="dijit/form/TextBox" type="text" name="desc" id="desc"></td>-->
+                <!--</tr>-->
+            <!--</table>-->
+        <!--</div>-->
+
+        <!--<div class="dijitDialogPaneActionBar">-->
+            <!--<button data-dojo-type="dijit/form/Button" type="submit" onClick="return myFormDialog.isValid();">-->
+                <!--OK-->
+            <!--</button>-->
+            <!--<button data-dojo-type="dijit/form/Button" type="button" onClick="myFormDialog.hide()">-->
+                <!--Cancel-->
+            <!--</button>-->
+        <!--</div>-->
+    <!--</div>-->
+
+
+
+
+
+    <div id="efront_data"></div>
+
+</div>
+<div id="initContainer"></div>
+<div id="initErrorContainer"></div>
+<script src="js/progressbar.js-1.0.0/dist/progressbar.min.js"></script>
+<script data-dojo-config="async: 1" src="bower_components/dojo/dojo.js"></script>
+<script>
+    require([
+        'dojo/dom',
+        'dojo/dom-construct',
+        'dojo/request',
+        'dojox/encoding/base64',
+        'dojo/json',
+        'dojox/widget/Standby',
+        'dojo/when',
+        'dojo/promise/all',
+        'dijit/Dialog',
+        'dijit/form/Button',
+        'dijit/form/Form',
+        'dijit/form/TextBox',
+        'dojo/ready',
+        'dijit/registry',
+        'dijit/layout/ContentPane',
+        'dojo/parser',
+        'dojo/on',
+        'dojo/request/xhr',
+        'dojo/dom-class'
+    ], function(dom, domConstruct, request, base64, JSON, Standby, when, all, Dialog, Button, Form, TextBox, ready,
+                registry, ContentPane, parser, on, xhr, domClass ) {
+        document.getElementById('status').innerHTML = "<h3>all was loaded ok</h3>";
+        parser.parse();
+
+
+        var rootElement = dom.byId('efront_root');
+        var initContainer = dom.byId('initContainer');
+        var initErrorContainer = dom.byId('initErrorContainer');
+        var hostnamedom = dom.byId('hostname'), apikeydom = dom.byId('apikey');
+        var apiendpoint_suffix = '/API/v1.0';
+        var _id = "22630838";
+        var toByteArray = function (str) { /* Helper function for the authentication against eFront */
+            var bytes = [];
+            for (var i = 0; i < str.length; ++i) {
+                bytes.push(str.charCodeAt(i));
+            }
+            return bytes;
+        };
+
+
+
+
+
+
+
+
+        // -- At this point get data from Connections
+
+        // check if efrontcredentials are correct and if yes create the client entry in mongo
+        function createClient(data){
+            xhr(data.efrontHost + apiendpoint_suffix + '/Users', {
+                /* Get the list of available users from eFront - we don't need them. We just need the http code */
+                headers: {
+                    "Authorization": "Basic " + base64.encode(toByteArray(data.efrontApiKey + ":"))
+                }
+            }).then(function (text) { /* If any of their emails matches against the current user's email then return the user */
+                xhr("api/clients/", {
+                    handleAs: "json",
+                    method: "POST",
+                    data: data,
+                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+                }).then(function (response) {
+                    // DEBUG
+                    console.log(response);
+                    if ('message' in response && response['message'] == 'Client created!'){
+                        var host = hostnamedom.value;
+                        var key = apikeydom.value;
+                        hostnamedom.value = '';
+                        apikeydom.value = '';
+                        myDialog.hide();
+                        main(key,host);
+                    }
+                    // Do something with the handled data
+                }, function (err) {
+                    console.log(err);
+                    myDialog.hide();
+                    // Handle the error condition
+                });
+            }, function (err) {  // This one means we didn't get a proper response back (most probably false url)
+                // DEBUG
+                var errortext;
+                console.log(err);
+                removePreviousError();
+                if (err.response.status == (404 || 0)){
+                    errortext = 'Invalid Configuration - Please check your hostname.';
+                    console.log(errortext);
+                    buildInitErrors(errortext)
+                }
+                else if (err.response.status == 401){
+                    errortext = 'Invalid Configuration - Please check your API Key.';
+                    console.log(errortext);
+                    buildInitErrors(errortext)
+                }
+                else{
+                    errortext = 'Unknown error. Please contact support';
+                    console.log(errortext);
+                    buildInitErrors(errortext)
+                }
+                myDialog.hide();
+            })
+        }
+
+
+
+        on(myForm, "submit", function (e) {
+            e.preventDefault();
+            console.log('form is being submitted');
+            // Configuration logic here
+            (function (_id) {
+                var data = {};
+                data._id = _id;
+                data.efrontApiKey = apikeydom.value;
+                data.efrontHost = hostnamedom.value;
+                createClient(data);
+            }(_id));
+        });
+
+
+        function buildConfButton() {
+            var inputHTML = "<div class='jumbotron_container'><a id='initialSetup' class='jumbotron' href='#'>Setup</a></div>";
+            rootElement.style.display = "none";
+//            query("#efront_root").style("display", "none");
+//            var initContainer = dom.byId('initContainer');
+//            domConstruct.empty(rootElement.id);
+            domConstruct.place(inputHTML, initContainer.id);
+//            throw new Error(errorMsg);
+        }
+
+        function buildInitErrors(error) {
+            var inputHTML = "<div id='initError_container'><p id='errorDescription'>" + error + "</p></div>";
+//            rootElement.style.display = "block";
+//            query("#efront_root").style("display", "none");
+//            var initContainer = dom.byId('initContainer');
+//            domConstruct.empty(rootElement.id);
+            domConstruct.place(inputHTML, initErrorContainer.id);
+//            throw new Error(errorMsg);
+        }
+
+        function removePreviousError(){
+            domConstruct.destroy('initError_container');
+        }
+
+
+        function checkOrg(_id) {
+            xhr("api/clients/" + _id, {
+                handleAs: "json"
+            }).then(function (data) {
+                // DEBUG
+                console.log(data);  // dump incoming data
+
+                if ('_id' in data) {
+                    console.log('exists ok');
+                    rootElement.style.display="block";
+                    main(data.efrontApiKey, data.efrontHost);
+                }
+                else { // Prompt to enter auth info
+                    console.log('No configuration found! - ');
+                    buildConfButton();
+                    document.getElementById("initialSetup").addEventListener("click", function (ev) {
+                        ev.preventDefault();
+                        if (domClass.contains(this, 'disabled')) {
+                            return;
+                        }
+                        myDialog.show();
+                    });
+//                    return;
+
+//                    return null;
+                }
+                hostnamedom.value = '';
+                apikeydom.value = '';
+                myDialog.hide();
+                // Do something with the handled data
+            }, function (err) {
+                console.log(err);
+                myDialog.hide();
+                // Handle the error condition
+            });
+        }
+
+
+
+//        dom.byId('setup').on('click', function () {
+//            console.log('clicked the update button');
+//
+//        });
+//        document.getElementById("setup").addEventListener("click", function (ev) {
+//            ev.preventDefault();
+//            if (domClass.contains(this, 'disabled')) {
+//                return;
+//            }
+//            myDialog.show();
+//        });
+//        updateCredentials
+
+
+        checkOrg(_id);
+//        if (!returnValue){
+////            return 0;
+//        }
+
+        // -------------------------------------------------------------------------------------------------------------
+
+
+        // This is only called once we've got the proper configuration credentials
+        function main(key, url){
+            console.log('key received is: ' + key);
+            console.log('host received is: ' + url);
+
+
+//            var eFrontAPIKey = "008bfef55c6dde70be30";
+            var eFrontAPIKey = key;
+//            var eFrontBaseURL = "https://conn.pro.efrontlearning.com";
+            var eFrontBaseURL = url;
+
+
+    //        var rootElement = this.iContext.getRootElement(); /* This is the root element our widget will be rendered in */
+    //        var rootElement = document.getElementById('efront_root');
+            /* This is the generic error handling function */
+            function errorHandler(errorMsg, spinnerStop) {
+                if (spinnerStop) standby.hide();
+                var errorHTML = "<div class='errorNodes'><ul><li><span style='color: red;'><strong>" + errorMsg + "</strong></span></li></ul></div>";
+                domConstruct.empty(rootElement.id);
+                domConstruct.place(errorHTML, rootElement.id);
+                throw new Error(errorMsg);
+            }
+
+            /* Retrieve the declared api key from the configuration file */
+    //        COMMENTED OUT
+    //        if ('api_key' in window.efrontConf && typeof window.efrontConf.api_key !== 'undefined') {
+    //            eFrontAPIKey = window.efrontConf.api_key;
+    //        }
+    //        else{
+    //            errorHandler('ERROR! No API Key was specified. Please define one in \'config.js\'.', false);
+    //        }
+
+            var eFrontAPI = eFrontBaseURL + '/API/v1.0';
+
+            /* Retrieve the declared eFront host from the configuration file */
+    //        COMMENTED OUT
+    //        if ('host' in window.efrontConf && typeof window.efrontConf.host !== 'undefined') {
+    //            eFrontBaseURL = window.efrontConf.host;
+    //            /* Build the API Base Path */
+    //            var eFrontAPI = eFrontBaseURL + '/API/v1.0';
+    //        }
+    //        else{
+    //            errorHandler('ERROR! No Host was specified. Please define one in \'config.js\'.', false);
+    //        }
+
+            /* Align the loading spinner to the root element */
+            var standby = new Standby({target: rootElement.id, color: 'none'});
+            document.body.appendChild(standby.domNode);
+            standby.startup();
+            standby.show();
+
+            /* Get the IBM connections user profile. If the email matches anyone against the eFront database, then that
+             * user is used. Otherwise a new user is created using the IBM connections userid as the username. */
+            try {
+                var ibmUID = "22632187";
+                var ibmUserEmail = "stratis.konstantinos@gmail.com";
+                var ibmDisplayName = "Konstantinos Stratis";
+                // EDIT
+    //            var ibmUserProfile = this.iContext.getUserProfile();
+    //            var ibmUID = ibmUserProfile.getItemValue('userid');
+    //            var ibmUserEmail = ibmUserProfile.getItemValue('email');
+    //            var ibmDisplayName = ibmUserProfile.getItemValue('displayName');
+            }
+            catch (e) { /* If we can't retrieve that, something is really wrong and the plugin should abort immediatelly */
+                errorHandler('A critical error occurred while retrieving the system user: ' + e, true);
+            }
+
+            if (!ibmUID || !ibmUserEmail || !ibmDisplayName) {
+                errorHandler('A critical error occurred while retrieving the user profile: Insufficient data.', true);
+            }
+
+            var userID = request(eFrontAPI + '/Users', {
+                /* Get the list of available users from eFront */
+                headers: {
+                    "Authorization": "Basic " + base64.encode(toByteArray(eFrontAPIKey + ":"))
+                }
+            }).then(
+                    function (text) { /* If any of their emails matches against the current user's email then return the user */
+                        try {
+                            var userListObject = JSON.parse(text);
+                        }
+                        catch (e) {
+                            errorHandler('An error occurred while parsing the list of eFront users: ' + e, true);
+                        }
+                        for (var i = 0; i < userListObject.data.length; i++) { /* Check current user's email against eFront users' one  */
+                            if (ibmUserEmail == userListObject.data[i].email) {
+                                /* Return the match */
+                                return userListObject.data[i].id;
+                            }
+                        }
+                        return request.post(eFrontAPI + '/User', {
+                            /* Otherwise create a new user */
+                            headers: {
+                                "Authorization": "Basic " + base64.encode(toByteArray(eFrontAPIKey + ":"))
+                            },
+                            data: {
+                                "login": ibmUID,
+                                "name": ibmDisplayName,
+                                "surname": ibmDisplayName,
+                                "email": ibmUserEmail,
+                                "password": ibmUserEmail
+                            }
+                        }).then(function (rawUserCreationResponse) {
+                            var newUser = JSON.parse(rawUserCreationResponse);
+                            /*console.log('here is the new user');
+                             console.log(newUser);*/
+                            return newUser.data.id;
+                        }, function (err) {
+                            errorHandler('ERROR! Unable to create new user account. Please check your network and/or contact your system admin. ' + err, true);
+                        })
+                    }, function (err) {
+                        errorHandler('ERROR! Unable to determine current user. Please check your network and/or contact your system admin. ' + err, true);
+                    });
+
+            function getLoginURL(userID) { /* Once we've got the user id, get the autologin url */
+                return when(
+                        userID,
+                        function () {
+                            return request(eFrontAPI + '/Autologin/' + ibmUID, {
+                                headers: {
+                                    "Authorization": "Basic " + base64.encode(toByteArray(eFrontAPIKey + ":"))
+                                }
+                            }).then(function (rawUserToken) {
+                                try {
+                                    var userProfile = JSON.parse(rawUserToken);
+                                } catch (e) {
+                                    var errorMsg = 'An error occurred while retrieving the login url: ' + e;
+                                    console.log(errorMsg);
+                                    throw new Error(errorMsg);
+                                }
+                                /*console.log(userProfile.data);*/
+                                return userProfile.data;
+                            }, function (err) {
+                                errorHandler('ERROR! Unable to fetch the autologin token. Please check your network and/or contact your system admin. ' + err, true);
+                            });
+                        });
+            }
+
+            function getCourseList(userID) { /* Using the UID, Get the user's courses */
+                return when(
+                        userID,
+                        function (userID) {
+                            return request(eFrontAPI + '/User/' + userID, {
+                                headers: {
+                                    "Authorization": "Basic " + base64.encode(toByteArray(eFrontAPIKey + ":"))
+                                }
+                            }).then(function (rawUserProfile) {
+                                var userProfile = JSON.parse(rawUserProfile);
+                                /*console.log(userProfile);*/
+                                return userProfile.data.courses.list;
+                            }, function (err) {
+                                errorHandler('ERROR! Unable to properly fetch the user\'s courses. Please check your network and/or contact your system admin. ' + err, true);
+                            }).then(function (courseList) { /* Enrich courses with progress data */
+                                /*console.log(courseList);*/
+                                for (var i = 0; i < courseList.length; i++) {
+                                    courseList[i].lessonList = request(eFrontAPI + '/Course/' + courseList[i].id + '/UserProgress/' + userID, {
+                                        headers: {
+                                            "Authorization": "Basic " + base64.encode(toByteArray(eFrontAPIKey + ":"))
+                                        }
+                                    }).then(function (rawCourseData) {
+                                        var courseData = JSON.parse(rawCourseData);
+                                        /*console.log(courseData.data);*/
+                                        return courseData.data;
+                                    }, function (err) {
+                                        errorHandler('ERROR! Unable to retrieve course progress. Please check your network and/or contact your system admin. ' + err, true);
+                                    })
+                                }
+                                return courseList;
+                            });
+                        })
+            }
+
+            /* These two function both require the userID but once we secure it they can execute asynchronously. */
+            var courseList = getCourseList(userID);
+            var autoLoginURL = getLoginURL(userID);
+            all({
+                autoLoginURL: autoLoginURL,
+                courseList: courseList
+            }).then(function (data) { /* Once all pieces have fallen into place, construct the course table */
+                /*console.log(data.autoLoginURL);*/
+                initContainer.style.display="none";
+                initErrorContainer.style.display="none";
+                rootElement.style.display="block";
+                var eFrontFullURL = eFrontBaseURL + data.autoLoginURL;
+                var courseURL = eFrontFullURL + '/go/cstart/course/';
+                standby.hide();
+
+
+
+                // ---STUB---
+                var configbutton = domConstruct.toDom("<a id='setup' title='Settings' href='#'><i class='fa fa-cog fa-2x'></i></a>");
+                domConstruct.place(configbutton, "configbutton");
+                // super useful line
+    //         domClass.add(configbutton, "disabled");
+
+//                document.getElementById("setup").addEventListener("click", function (ev) {
+//                    ev.preventDefault();
+//                    if (domClass.contains(this, 'disabled')) {
+//                        return;
+//                    }
+//                    myDialog.show();
+//                });
+                // ---END OF STUB--
+
+
+                var homebutton = domConstruct.toDom("<a id='gohome' target='_blank' title='eFront Dashboard' href='" + eFrontFullURL + "'><i class='fa fa-home fa-2x'></i></a>");
+                domConstruct.place(homebutton, "homebutton");
+                if (data.courseList.length) {
+    //                var table = domConstruct.toDom("<div id='table-wrapper'><div><table cellspacing='0' class='course_style'><tbody id='efront_rows' class='course_style'></tbody></table></div></div>");
+                    var table = domConstruct.toDom("<div id='table-wrapper'><div id='table-scroll'><table cellspacing='0' class='course_style'><tbody id='efront_rows' class='course_style'></tbody></table></div></div>");
+                    domConstruct.place(table, "efront_data");
+                    data.courseList.forEach(function (course) {
+                        var courseFullURL = courseURL + course.id;
+                        var columnA = "<tr><td><div id='eFrontColumn'><a title='Open course \"" + course.formatted_name + "\"' target='_blank' href=" + courseFullURL + ">" + "<img src='img/book.svg' width='32' height='32' alt='[eFront Course]' id='c_pic'/><span id='c_description'><strong>" + course.formatted_name + "</strong></span></div></a></td></div>";
+                        var columnB = "<td style='text-align: center;'><div class='progressBars' id='" + course.id + "'><!--<span class='progress_percentage' style='width: 100%; text-align:center;'>N/A YET</span>--></div></td>";
+                        var columnC = "<td class='link' align='center'><a title='Open course \"" + course.formatted_name + "\"' target='_blank' href='" + courseFullURL + "' class='gotocourse'><i class='fa fa-arrow-right fa-2x gotocourseicon'></i></a></td></tr>";
+                        var columns = columnA + columnB + columnC;
+                        var row = domConstruct.toDom(columns);
+                        domConstruct.place(row, "efront_rows");
+                        /* This is the final step that needs to calculate
+                         the progress once it's properly fetched from the API */
+                        when(course.lessonList, function (lessonList) {
+                            var lessonsComplete = 0;
+                            var courseProgress = 0;
+                            lessonList.forEach(function (lesson) {
+                                if (lesson.Status == 'passed') {
+                                    lessonsComplete++;
+                                }
+                            });
+                            if (lessonsComplete) {
+                                courseProgress = (lessonsComplete / lessonList.length).toFixed(2);
+                                /*console.log('Lesson Complete: Progress is: ' + courseProgress);*/
+                            }
+                            /* Calculate progress based on how may course lessons are complete */
+                            createProgressGraph(course.id, courseProgress);
+                        });
+                    });
+                }
+                else { /* In case a user has no courses */
+                    var nocoursemsg = domConstruct.toDom("<div class='nocourses' style='display: inline-flex;'><img src='img/noCourses.svg' width='64' height='64' alt='[eFront No Course]' style='margin: auto;'/>&nbsp;<h1 style='text-align: center;color: #454545;'>You don't have any courses yet.</h1></div><div id='fetch' style='text-align: center;'>Go to <a target='_blank' href='" + eFrontFullURL + "/go/catalog/'>eFront</a> and get some now!</div>");
+                    domConstruct.place(nocoursemsg, "efront_data");
+                    /*console.log('User has no courses');*/
+                }
+
+            }, function (err) {
+                errorHandler('ERROR! Exception occurred. Please contact your system admin. ' + err, true);
+            });
+
+            function createProgressGraph(domCourseIDTag, percentage) {
+                var startColor = '#FC5B3F';
+                var endColor = '#6FD57F';
+                var element = document.getElementById(domCourseIDTag);
+                var circle = new ProgressBar.Circle(element, {
+                    color: startColor,
+                    trailColor: '#999',
+                    trailWidth: 1,
+                    duration: 800,
+                    easing: 'easeInOut',
+                    strokeWidth: 5,
+                    step: function (state, circle) {
+                        circle.path.setAttribute('stroke', state.color);
+                    }
+                });
+                circle.animate(percentage, {
+                    from: {color: startColor},
+                    to: {color: endColor}
+                }, function () {
+                    var truePercentage = percentage * 100;
+                    if (truePercentage == 100) {
+                        element.className += " " + "background_class";
+                        circle.setText('✔');
+                        var domel = circle.text;
+                        domel.innerHTML = "<i style='color:white!important;' class='fa fa-check fa-2x'</i>";
+                    }
+                    else {
+                        circle.setText(truePercentage + ' %');
+                    }
+                });
+            }
+        }
+        /*console.log('eFront executed successfully!');*/
+    });
+
+</script>
+
+
+</body>
+</html>

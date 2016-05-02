@@ -156,6 +156,28 @@
             }
             return bytes;
         };
+        var updateFlag = false;
+
+
+
+        function updateClient(data){
+            updateFlag = false;
+            console.log('updating credentials');
+            domConstruct.empty('efront_root');
+            myDialog.hide();
+
+//            xhr(data.efrontHost + apiendpoint_suffix + '/Users', {
+                /* Get the list of available users from eFront - we don't need them. We just need the http code */
+//                headers: {
+//                    "Authorization": "Basic " + base64.encode(toByteArray(data.efrontApiKey + ":"))
+//                }
+//            }).then(function (text) { /* If any of their emails matches against the current user's email then return the user */
+
+//            })
+        }
+
+
+
 
 
 
@@ -231,7 +253,12 @@
                 data._id = _id;
                 data.efrontApiKey = apikeydom.value;
                 data.efrontHost = hostnamedom.value;
-                createClient(data);
+                if (!updateFlag){
+                    createClient(data);
+                }else{
+                    console.log('updating client');
+                    updateClient(data);
+                }
             }(_id));
         });
 
@@ -517,14 +544,12 @@
                 // super useful line
     //         domClass.add(configbutton, "disabled");
 
-//                document.getElementById("setup").addEventListener("click", function (ev) {
-//                    ev.preventDefault();
-//                    if (domClass.contains(this, 'disabled')) {
-//                        return;
-//                    }
-//                    myDialog.show();
-//                });
-                // ---END OF STUB--
+                document.getElementById('setup').addEventListener('click', function (ev) {
+                    ev.preventDefault();
+                    console.log('dialog for update displayed');
+                    updateFlag=true;
+                    myDialog.show();
+                });
 
 
                 var homebutton = domConstruct.toDom("<a id='gohome' target='_blank' title='eFront Dashboard' href='" + eFrontFullURL + "'><i class='fa fa-home fa-2x'></i></a>");

@@ -11,109 +11,7 @@
 <!--<p>eFrontPro app running at <code id="host"></code>.</p>-->
 <!--<p> The following context is passed from Communities: </p>-->
 <!--<pre id="contextId"></pre>-->
-<div id="status"></div>
-<div class="efront_container" id="efront_root" style="display: none;">
-    <div id="headContainer">
-        <div id="title">
-            <h2 style="color: #4D82B8;font-weight:500;">My Training&nbsp;
-                <img id="open_book" style="vertical-align: middle;" src="img/open_book_vector.svg"></h2>
-        </div>
-        <div id="button_group">
-            <div id="homebutton"></div>
-            <div id="configbutton"></div>
-        </div>
-    </div>
-    <hr class="horizontalRuler">
-
-
-    <div data-dojo-type="dijit/Dialog" id="myDialog" data-dojo-id="myDialog" data-dojo-props="title: 'Configuration'" style="display: none;">
-        <form data-dojo-type="dijit/form/Form" data-dojo-id="myForm" id="myForm">
-            <!--<script type="dojo/on" data-dojo-event="submit" data-dojo-args="e">-->
-                <!--e.preventDefault(); // prevent the default submit-->
-                <!--if (!myForm.isValid()) {-->
-                    <!--alert('Please fix fields');-->
-                    <!--return;-->
-                <!--}-->
-
-                <!--window.alert("Would submit here via dojo/xhr");-->
-            <!--// xhr.post( {-->
-            <!--//      url: 'foo.com/handler',-->
-            <!--//      content: { field: 'go here' },-->
-            <!--//      handleAs: 'json'-->
-            <!--//      load: function(data){ .. },-->
-            <!--//      error: function(data){ .. }-->
-            <!--//  });-->
-            <!--</script>-->
-            <div class="dijitDialogPaneContentArea">
-                <table>
-                    <tr>
-                        <td style="text-align: right;"><label for="hostname">Hostname: </label></td>
-                        <td><input data-dojo-type="dijit/form/TextBox" data-dojo-props="required:true" type="text" name="hostname" id="hostname" data-dojo-id="hostname"></td>
-                    </tr>
-                    <tr>
-                        <td style="text-align: right;"><label for="apikey">API Key: </label></td>
-                        <td><input data-dojo-type="dijit/form/TextBox" data-dojo-props="required:true" type="text" name="apikey" id="apikey" data-dojo-id="apikey"></td>
-                    </tr>
-                </table>
-            </div>
-            <div class="dijitDialogPaneActionBar">
-                <button id="okButton" data-dojo-type="dijit/form/Button" type="submit">OK</button>
-                <button id="cancelButton" data-dojo-type="dijit/form/Button" type="button" data-dojo-props="onClick:function(){myDialog.hide();}">Cancel</button>
-            </div>
-        </form>
-    </div>
-
-    <!--<div data-dojo-type="dijit/Dialog" data-dojo-id="myDialog" title="Form Dialog"-->
-         <!--execute="alert('submitted w/args:\n' + dojo.toJson(arguments[0], true));">-->
-
-        <!--<div class="dijitDialogPaneContentArea">-->
-            <!--<table>-->
-                <!--<tr>-->
-                    <!--<td><label for="name">Name: </label></td>-->
-                    <!--<td><input data-dojo-type="dijit/form/TextBox" type="text" name="name" id="name"></td>-->
-                <!--</tr>-->
-                <!--<tr>-->
-                    <!--<td><label for="loc">Location: </label></td>-->
-                    <!--<td><input data-dojo-type="dijit/form/TextBox" type="text" name="loc" id="loc"></td>-->
-                <!--</tr>-->
-                <!--<tr>-->
-                    <!--<td><label for="date">Start date: </label></td>-->
-                    <!--<td><input data-dojo-type="dijit/form/DateTextBox" data-dojo-id="myStartDate" onChange="myEndDate.constraints.min = arguments[0];" type="text" name="sdate" id="sdate"></td>-->
-                <!--</tr>-->
-                <!--<tr>-->
-                    <!--<td><label for="date">End date: </label></td>-->
-                    <!--<td><input data-dojo-type="dijit/form/DateTextBox" data-dojo-id="myEndDate" onChange="myStartDate.constraints.max = arguments[0];" type="text" name="edate" id="edate"></td>-->
-                <!--</tr>-->
-                <!--<tr>-->
-                    <!--<td><label for="date">Time: </label></td>-->
-                    <!--<td><input data-dojo-type="dijit/form/TimeTextBox" type="text" name="time" id="time"></td>-->
-                <!--</tr>-->
-                <!--<tr>-->
-                    <!--<td><label for="desc">Description: </label></td>-->
-                    <!--<td><input data-dojo-type="dijit/form/TextBox" type="text" name="desc" id="desc"></td>-->
-                <!--</tr>-->
-            <!--</table>-->
-        <!--</div>-->
-
-        <!--<div class="dijitDialogPaneActionBar">-->
-            <!--<button data-dojo-type="dijit/form/Button" type="submit" onClick="return myFormDialog.isValid();">-->
-                <!--OK-->
-            <!--</button>-->
-            <!--<button data-dojo-type="dijit/form/Button" type="button" onClick="myFormDialog.hide()">-->
-                <!--Cancel-->
-            <!--</button>-->
-        <!--</div>-->
-    <!--</div>-->
-
-
-
-
-
-    <div id="efront_data"></div>
-
-</div>
-<div id="initContainer"></div>
-<div id="initErrorContainer"></div>
+<div id="rootEl"></div>
 <script src="js/progressbar.js-1.0.0/dist/progressbar.min.js"></script>
 <script data-dojo-config="async: 1" src="bower_components/dojo/dojo.js"></script>
 <script>
@@ -139,6 +37,39 @@
         'dojo/dom-class'
     ], function(dom, domConstruct, request, base64, JSON, Standby, when, all, Dialog, Button, Form, TextBox, ready,
                 registry, ContentPane, parser, on, xhr, domClass ) {
+
+
+        // This part builds the html skeleton
+        var startMarkup = '<div id="status"></div> <div class="efront_container" id="efront_root" style="display: none;"> ' +
+                '<div id="headContainer"><div id="title"><h2 style="color: #4D82B8;font-weight:500;">My Training&nbsp;' +
+                '<img id="open_book" style="vertical-align: middle;" src="img/open_book_vector.svg"></h2></div><div id="button_group">' +
+                '<div id="homebutton"></div><div id="configbutton"></div> </div> </div> <hr class="horizontalRuler">';
+
+        var middleMarkup = '<div data-dojo-type="dijit/Dialog" id="myDialog" data-dojo-id="myDialog" data-dojo-props="title: \'Configuration\'" style="display: none;">' +
+                '<form data-dojo-type="dijit/form/Form" data-dojo-id="myForm" id="myForm">';
+
+        var endMarkup = '<div class="dijitDialogPaneContentArea"><table><tr><td style="text-align: right;"><label for="hostname">Hostname: </label></td>' +
+                '<td><input data-dojo-type="dijit/form/TextBox" data-dojo-props="required:true" type="text" name="hostname" id="hostname" data-dojo-id="hostname"></td>' +
+                '</tr> <tr> <td style="text-align: right;"><label for="apikey">API Key: </label></td> <td>' +
+                '<input data-dojo-type="dijit/form/TextBox" data-dojo-props="required:true" type="text" name="apikey" id="apikey" data-dojo-id="apikey"></td>' +
+                '</tr> </table> </div> <div class="dijitDialogPaneActionBar"> <button id="okButton" data-dojo-type="dijit/form/Button" type="submit">OK</button>' +
+                '<button id="cancelButton" data-dojo-type="dijit/form/Button" type="button" data-dojo-props="onClick:function(){myDialog.hide();}">Cancel</button>' +
+                '</div> </form> </div><div id="efront_data"></div> </div> <div id="initContainer"></div> <div id="initErrorContainer"></div>';
+
+        var mainMarkup = startMarkup + middleMarkup + endMarkup;
+        var r = dom.byId('rootEl');
+//        console.log(r);
+        domConstruct.place(mainMarkup, r.id);
+
+
+
+
+
+
+
+
+
+
         document.getElementById('status').innerHTML = "<h3>all was loaded ok</h3>";
         parser.parse();
 
@@ -158,23 +89,7 @@
         };
         var updateFlag = false;
 
-        var startMarkup = '<div id="status"></div> <div class="efront_container" id="efront_root" style="display: none;"> ' +
-                '<div id="headContainer"><div id="title"><h2 style="color: #4D82B8;font-weight:500;">My Training&nbsp;' +
-                '<img id="open_book" style="vertical-align: middle;" src="img/open_book_vector.svg"></h2></div><div id="button_group">' +
-                '<div id="homebutton"></div><div id="configbutton"></div> </div> </div> <hr class="horizontalRuler">';
 
-        var middleMarkup = '<div data-dojo-type="dijit/Dialog" id="myDialog" data-dojo-id="myDialog" data-dojo-props="title: \'Configuration\'" style="display: none;">' +
-                        '<form data-dojo-type="dijit/form/Form" data-dojo-id="myForm" id="myForm">';
-
-        var endMarkup = '<div class="dijitDialogPaneContentArea"><table><tr><td style="text-align: right;"><label for="hostname">Hostname: </label></td>' +
-        '<td><input data-dojo-type="dijit/form/TextBox" data-dojo-props="required:true" type="text" name="hostname" id="hostname" data-dojo-id="hostname"></td>' +
-        '</tr> <tr> <td style="text-align: right;"><label for="apikey">API Key: </label></td> <td>' +
-                '<input data-dojo-type="dijit/form/TextBox" data-dojo-props="required:true" type="text" name="apikey" id="apikey" data-dojo-id="apikey"></td>' +
-                '</tr> </table> </div> <div class="dijitDialogPaneActionBar"> <button id="okButton" data-dojo-type="dijit/form/Button" type="submit">OK</button>' +
-                '<button id="cancelButton" data-dojo-type="dijit/form/Button" type="button" data-dojo-props="onClick:function(){myDialog.hide();}">Cancel</button>' +
-                '</div> </form> </div><div id="efront_data"></div> </div> <div id="initContainer"></div> <div id="initErrorContainer"></div>';
-
-        var mainMarkup = startMarkup + middleMarkup + endMarkup;
 
 
 
@@ -216,8 +131,20 @@
                         hostnamedom.value = '';
                         apikeydom.value = '';
                         console.log('client updated all good');
-//                        domConstruct.empty('efront_root');
+
+//                        var rr = dom.byId('rootEle');
                         myDialog.hide();
+
+                        domConstruct.empty(r);
+                        domConstruct.place(mainMarkup, r.id);
+                        var newRoot = dom.byId('efront_root');
+//                        parser.parse();
+
+//                        domConstruct.place(mainMarkup, r.id);
+//                        r.style.display= "block";
+                        newRoot.style.display="block";
+//                        initContainer.style.display="block";
+//                        initErrorContainer.style.display="block";
                         main(key, host);
                     }
                     // Do something with the handled data

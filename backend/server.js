@@ -79,16 +79,19 @@ router.route('/clients/:_id')
     })
     // UPDATE THE CLIENT WITH THE SPECIFIED ORGID (accessed at GET http://localhost:8080/api/clients/:_id)
     .put(function(req, res) {
-        var query = Client.findOne({ 'orgId':  req.params._id});
+        var query = Client.findOne({ '_id':  req.params._id});
         query.exec(function (err, client) {
             if (err)
                 res.send(err);
+            console.log(client);
+            console.log(req.body);
             client.efrontHost = req.body.efrontHost;  // update the client's efrontpro host
             client.efrontApiKey = req.body.efrontApiKey;  // update the bears info
             client.save(function(err){
                if (err)
                    res.send(err);
-                res.json({ message: 'Client configuration successfully updated'});
+                res.json({ message: 'Client updated'});
+                console.log('client updated!');
             });
         });
     })

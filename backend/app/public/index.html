@@ -158,22 +158,99 @@
         };
         var updateFlag = false;
 
+        var startMarkup = '<div id="status"></div> <div class="efront_container" id="efront_root" style="display: none;"> ' +
+                '<div id="headContainer"><div id="title"><h2 style="color: #4D82B8;font-weight:500;">My Training&nbsp;' +
+                '<img id="open_book" style="vertical-align: middle;" src="img/open_book_vector.svg"></h2></div><div id="button_group">' +
+                '<div id="homebutton"></div><div id="configbutton"></div> </div> </div> <hr class="horizontalRuler">';
 
+        var middleMarkup = '<div data-dojo-type="dijit/Dialog" id="myDialog" data-dojo-id="myDialog" data-dojo-props="title: \'Configuration\'" style="display: none;">' +
+                        '<form data-dojo-type="dijit/form/Form" data-dojo-id="myForm" id="myForm">';
+
+        var endMarkup = '<div class="dijitDialogPaneContentArea"><table><tr><td style="text-align: right;"><label for="hostname">Hostname: </label></td>' +
+        '<td><input data-dojo-type="dijit/form/TextBox" data-dojo-props="required:true" type="text" name="hostname" id="hostname" data-dojo-id="hostname"></td>' +
+        '</tr> <tr> <td style="text-align: right;"><label for="apikey">API Key: </label></td> <td>' +
+                '<input data-dojo-type="dijit/form/TextBox" data-dojo-props="required:true" type="text" name="apikey" id="apikey" data-dojo-id="apikey"></td>' +
+                '</tr> </table> </div> <div class="dijitDialogPaneActionBar"> <button id="okButton" data-dojo-type="dijit/form/Button" type="submit">OK</button>' +
+                '<button id="cancelButton" data-dojo-type="dijit/form/Button" type="button" data-dojo-props="onClick:function(){myDialog.hide();}">Cancel</button>' +
+                '</div> </form> </div><div id="efront_data"></div> </div> <div id="initContainer"></div> <div id="initErrorContainer"></div>';
+
+        var mainMarkup = startMarkup + middleMarkup + endMarkup;
+
+
+
+
+        function setupButtonHandler(){
+            document.getElementById("initialSetup").addEventListener("click", function (ev) {
+                ev.preventDefault();
+                if (domClass.contains(this, 'disabled')) {
+                    return;
+                }
+                myDialog.show();
+            });
+        }
 
         function updateClient(data){
             updateFlag = false;
             console.log('updating credentials');
-            domConstruct.empty('efront_root');
-            myDialog.hide();
-
-//            xhr(data.efrontHost + apiendpoint_suffix + '/Users', {
+//            domConstruct.empty('efront_root');
+//            myDialog.hide();
+            console.log('the data is:');
+            console.log(data);
+            xhr(data.efrontHost + apiendpoint_suffix + '/Users', {
                 /* Get the list of available users from eFront - we don't need them. We just need the http code */
-//                headers: {
-//                    "Authorization": "Basic " + base64.encode(toByteArray(data.efrontApiKey + ":"))
-//                }
-//            }).then(function (text) { /* If any of their emails matches against the current user's email then return the user */
+                headers: {
+                    "Authorization": "Basic " + base64.encode(toByteArray(data.efrontApiKey + ":"))
+                }
+            }).then(function (text) { /* If any of their emails matches against the current user's email then return the user */
+                xhr("api/clients/" + _id, {
+                    handleAs: "json",
+                    method: "PUT",
+                    data: data,
+                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+                }).then(function (response) {
+                    // DEBUG
+                    console.log(response);
+                    if ('message' in response && response['message'] == 'Client updated'){
+                        var host = hostnamedom.value;
+                        var key = apikeydom.value;
+                        hostnamedom.value = '';
+                        apikeydom.value = '';
+                        console.log('client updated all good');
+//                        domConstruct.empty('efront_root');
+                        myDialog.hide();
+                        main(key, host);
+                    }
+                    // Do something with the handled data
+                }, function (err) {
+                    console.log(err);
+                    myDialog.hide();
+                    // Handle the error condition
+                });
+            }, function (err) {  // This one means we didn't get a proper response back (most probably false url)
+                // DEBUG
+                var errortext;
+                console.log(err);
+                removePreviousError();
+                if (err.response.status == (404 || 0)){
+                    errortext = 'Invalid Configuration - Please check your hostname.';
+                }
+                else if (err.response.status == 401){
+                    errortext = 'Invalid Configuration - Please check your API Key.';
+                }
+                else{
+                    errortext = 'Unknown error. Please contact support';
+                }
+                console.log(errortext);
+                updateFlag = true;
+                domConstruct.empty('efront_root');
+                buildInitErrors(errortext);
+                buildConfButton();
+                setupButtonHandler();
+                initContainer.style.display="block";
+                initErrorContainer.style.display="block";
+                myDialog.hide();
+            })
 
-//            })
         }
 
 
@@ -279,6 +356,7 @@
 //            query("#efront_root").style("display", "none");
 //            var initContainer = dom.byId('initContainer');
 //            domConstruct.empty(rootElement.id);
+            console.log('inside out function');
             domConstruct.place(inputHTML, initErrorContainer.id);
 //            throw new Error(errorMsg);
         }
@@ -303,16 +381,7 @@
                 else { // Prompt to enter auth info
                     console.log('No configuration found! - ');
                     buildConfButton();
-                    document.getElementById("initialSetup").addEventListener("click", function (ev) {
-                        ev.preventDefault();
-                        if (domClass.contains(this, 'disabled')) {
-                            return;
-                        }
-                        myDialog.show();
-                    });
-//                    return;
-
-//                    return null;
+                    setupButtonHandler();
                 }
                 hostnamedom.value = '';
                 apikeydom.value = '';
@@ -353,6 +422,8 @@
         function main(key, url){
             console.log('key received is: ' + key);
             console.log('host received is: ' + url);
+//            domConstruct.empty(rootElement.id);
+
 
 
 //            var eFrontAPIKey = "008bfef55c6dde70be30";
@@ -627,6 +698,8 @@
                 });
             }
         }
+        initContainer.style.display="block";
+        initErrorContainer.style.display="block";
         /*console.log('eFront executed successfully!');*/
     });
 

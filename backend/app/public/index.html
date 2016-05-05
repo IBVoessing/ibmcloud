@@ -1,16 +1,12 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>eFrontPro v4.0</title>
+    <title>eFrontPro v5.0</title>
     <link rel="stylesheet" href="css/Font-Awesome-4.6.1/css/font-awesome.min.css">
     <link rel="stylesheet" href="bower_components/dijit/themes/claro/claro.css">
     <link rel="stylesheet" href="css/main.css">
 </head>
 <body class="claro">
-
-<!--<p>eFrontPro app running at <code id="host"></code>.</p>-->
-<!--<p> The following context is passed from Communities: </p>-->
-<!--<pre id="contextId"></pre>-->
 <div id="rootEl"></div>
 <script src="js/progressbar.js-1.0.0/dist/progressbar.min.js"></script>
 <script data-dojo-config="async: 1" src="bower_components/dojo/dojo.js"></script>
@@ -37,17 +33,13 @@
         'dojo/dom-class'
     ], function(dom, domConstruct, request, base64, JSON, Standby, when, all, Dialog, Button, Form, TextBox, ready,
                 registry, ContentPane, parser, on, xhr, domClass ) {
-
-
-        // This part builds the html skeleton
+        /* Build the HTML markup and split it in 3 parts for convenience */
         var startMarkup = '<div id="status"></div> <div class="efront_container" id="efront_root" style="display: none;"> ' +
                 '<div id="headContainer"><div id="title"><h2 style="color: #4D82B8;font-weight:500;">My Training&nbsp;' +
                 '<img id="open_book" style="vertical-align: middle;" src="img/open_book_vector.svg"></h2></div><div id="button_group">' +
                 '<div id="homebutton"></div><div id="configbutton"></div> </div> </div> <hr class="horizontalRuler">';
-
         var middleMarkup = '<div data-dojo-type="dijit/Dialog" id="myDialog" data-dojo-id="myDialog" data-dojo-props="title: \'Configuration\'" style="display: none;">' +
                 '<form data-dojo-type="dijit/form/Form" data-dojo-id="myForm" id="myForm">';
-
         var endMarkup = '<div class="dijitDialogPaneContentArea"><table><tr><td style="text-align: right;"><label for="hostname">Hostname: </label></td>' +
                 '<td><input data-dojo-type="dijit/form/TextBox" data-dojo-props="required:true" type="text" name="hostname" id="hostname" data-dojo-id="hostname"></td>' +
                 '</tr> <tr> <td style="text-align: right;"><label for="apikey">API Key: </label></td> <td>' +
@@ -55,31 +47,23 @@
                 '</tr> </table> </div> <div class="dijitDialogPaneActionBar"> <button id="okButton" data-dojo-type="dijit/form/Button" type="submit">OK</button>' +
                 '<button id="cancelButton" data-dojo-type="dijit/form/Button" type="button" data-dojo-props="onClick:function(){myDialog.hide();}">Cancel</button>' +
                 '</div> </form> </div><div id="efront_data"></div> </div> <div id="initContainer"></div> <div id="initErrorContainer"></div>';
-
+        /* Initiate the essentials */
         var mainMarkup = startMarkup + middleMarkup + endMarkup;
         var r = dom.byId('rootEl');
-//        console.log(r);
         domConstruct.place(mainMarkup, r.id);
-
-
-
-
-
-
-
-
-
-
-        document.getElementById('status').innerHTML = "<h3>all was loaded ok</h3>";
+//        document.getElementById('status').innerHTML = "<h3>all was loaded ok</h3>";
         parser.parse();
-
-
+        var _id = null;
+//        var _id = "22630801";
+        var conn_uid = null;
+        var conn_rights = null;
+        var conn_name = null;
+        var conn_email = null;
         var rootElement = dom.byId('efront_root');
         var initContainer = dom.byId('initContainer');
         var initErrorContainer = dom.byId('initErrorContainer');
         var hostnamedom = dom.byId('hostname'), apikeydom = dom.byId('apikey');
         var apiendpoint_suffix = '/API/v1.0';
-        var _id = "22630838";
         var toByteArray = function (str) { /* Helper function for the authentication against eFront */
             var bytes = [];
             for (var i = 0; i < str.length; ++i) {
@@ -89,28 +73,9 @@
         };
         var updateFlag = false;
 
-
-
-
-
-
-        function setupButtonHandler(){
-            document.getElementById("initialSetup").addEventListener("click", function (ev) {
-                ev.preventDefault();
-                if (domClass.contains(this, 'disabled')) {
-                    return;
-                }
-                myDialog.show();
-            });
-        }
-
+        /* This function is invoked each time the configuration is modified by the community creator */
         function updateClient(data){
             updateFlag = false;
-            console.log('updating credentials');
-//            domConstruct.empty('efront_root');
-//            myDialog.hide();
-            console.log('the data is:');
-            console.log(data);
             xhr(data.efrontHost + apiendpoint_suffix + '/Users', {
                 /* Get the list of available users from eFront - we don't need them. We just need the http code */
                 headers: {
@@ -123,40 +88,28 @@
                     data: data,
                     headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
                 }).then(function (response) {
-                    // DEBUG
-                    console.log(response);
+                    /* DEBUG
+                     * console.log(response); */
                     if ('message' in response && response['message'] == 'Client updated'){
                         var host = hostnamedom.value;
                         var key = apikeydom.value;
                         hostnamedom.value = '';
                         apikeydom.value = '';
-                        console.log('client updated all good');
-
-//                        var rr = dom.byId('rootEle');
                         myDialog.hide();
-
                         domConstruct.empty(r);
                         domConstruct.place(mainMarkup, r.id);
                         var newRoot = dom.byId('efront_root');
-//                        parser.parse();
-
-//                        domConstruct.place(mainMarkup, r.id);
-//                        r.style.display= "block";
                         newRoot.style.display="block";
-//                        initContainer.style.display="block";
-//                        initErrorContainer.style.display="block";
-                        main(key, host);
+                        main(key, host, conn_uid, conn_name, conn_email);
                     }
-                    // Do something with the handled data
+                    /* Do something with the handled data */
                 }, function (err) {
-                    console.log(err);
                     myDialog.hide();
-                    // Handle the error condition
                 });
-            }, function (err) {  // This one means we didn't get a proper response back (most probably false url)
-                // DEBUG
+            }, function (err) {  /* This one means we didn't get a proper response back (most probably false url) */
                 var errortext;
-                console.log(err);
+                /* DEBUG
+                console.log(err); */
                 removePreviousError();
                 if (err.response.status == (404 || 0)){
                     errortext = 'Invalid Configuration - Please check your hostname.';
@@ -165,9 +118,10 @@
                     errortext = 'Invalid Configuration - Please check your API Key.';
                 }
                 else{
-                    errortext = 'Unknown error. Please contact support';
+                    errortext = 'Error. Please check your configuration';
                 }
-                console.log(errortext);
+                /* DEBUG
+                 * console.log(errortext); */
                 updateFlag = true;
                 domConstruct.empty('efront_root');
                 buildInitErrors(errortext);
@@ -180,22 +134,11 @@
 
         }
 
-
-
-
-
-
-
-
-
-
-
-        // -- At this point get data from Connections
-
-        // check if efrontcredentials are correct and if yes create the client entry in mongo
+        /* Check if the eFront credentials are correct and if so create an entry for the given client
+         * in MongoDB */
         function createClient(data){
             xhr(data.efrontHost + apiendpoint_suffix + '/Users', {
-                /* Get the list of available users from eFront - we don't need them. We just need the http code */
+                /* Get the list of available users from eFront - we don't need them. We just need the http response code */
                 headers: {
                     "Authorization": "Basic " + base64.encode(toByteArray(data.efrontApiKey + ":"))
                 }
@@ -206,147 +149,152 @@
                     data: data,
                     headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
                 }).then(function (response) {
-                    // DEBUG
-                    console.log(response);
+                    /* DEBUG
+                     * console.log(response); */
                     if ('message' in response && response['message'] == 'Client created!'){
                         var host = hostnamedom.value;
                         var key = apikeydom.value;
                         hostnamedom.value = '';
                         apikeydom.value = '';
                         myDialog.hide();
-                        main(key,host);
+                        main(key, host, conn_uid, conn_name, conn_email);
                     }
-                    // Do something with the handled data
+                    /* Do something with the handled data */
                 }, function (err) {
-                    console.log(err);
                     myDialog.hide();
-                    // Handle the error condition
+                    /* Handle the error condition */
                 });
-            }, function (err) {  // This one means we didn't get a proper response back (most probably false url)
-                // DEBUG
+            }, function (err) {  /* This one means we didn't get a proper response back (most probably false url) */
+                /* DEBUG
+                 * console.log(err); */
                 var errortext;
-                console.log(err);
                 removePreviousError();
+                buildConfButton();
+                setupButtonHandler();
                 if (err.response.status == (404 || 0)){
                     errortext = 'Invalid Configuration - Please check your hostname.';
-                    console.log(errortext);
                     buildInitErrors(errortext)
                 }
                 else if (err.response.status == 401){
                     errortext = 'Invalid Configuration - Please check your API Key.';
-                    console.log(errortext);
                     buildInitErrors(errortext)
                 }
                 else{
-                    errortext = 'Unknown error. Please contact support';
-                    console.log(errortext);
+                    errortext = 'Error. Please check your configuration';
                     buildInitErrors(errortext)
                 }
                 myDialog.hide();
             })
         }
 
-
-
+        /* This is the form submission code for the configuration options */
         on(myForm, "submit", function (e) {
             e.preventDefault();
-            console.log('form is being submitted');
-            // Configuration logic here
+            /* DEBUG
+             * console.log('form is being submitted'); */
             (function (_id) {
                 var data = {};
                 data._id = _id;
                 data.efrontApiKey = apikeydom.value;
                 data.efrontHost = hostnamedom.value;
                 if (!updateFlag){
+                    /* DEBUG
+                     * console.log('creating client'); */
                     createClient(data);
-                }else{
-                    console.log('updating client');
+                } else {
+                    /* DEBUG
+                     * console.log('updating client'); */
                     updateClient(data);
                 }
             }(_id));
         });
 
-
+        /* This function builds the setup button dynamically and puts it on the dom */
         function buildConfButton() {
             var inputHTML = "<div class='jumbotron_container'><a id='initialSetup' class='jumbotron' href='#'>Setup</a></div>";
             rootElement.style.display = "none";
-//            query("#efront_root").style("display", "none");
-//            var initContainer = dom.byId('initContainer');
-//            domConstruct.empty(rootElement.id);
             domConstruct.place(inputHTML, initContainer.id);
-//            throw new Error(errorMsg);
         }
 
+        /* This sets up the click handler of the setup button */
+        function setupButtonHandler(){
+            document.getElementById("initialSetup").addEventListener("click", function (ev) {
+                ev.preventDefault();
+                if (domClass.contains(this, 'disabled')) {
+                    return;
+                }
+                myDialog.show();
+            });
+        }
+
+        /* This function builds any configuration error messages and places them up on the dom */
         function buildInitErrors(error) {
             var inputHTML = "<div id='initError_container'><p id='errorDescription'>" + error + "</p></div>";
-//            rootElement.style.display = "block";
-//            query("#efront_root").style("display", "none");
-//            var initContainer = dom.byId('initContainer');
-//            domConstruct.empty(rootElement.id);
-            console.log('inside out function');
             domConstruct.place(inputHTML, initErrorContainer.id);
-//            throw new Error(errorMsg);
         }
 
+        /* This one makes sure that only the last error message stays on screen */
         function removePreviousError(){
+            var initCont = dom.byId('initContainer');
+            domConstruct.empty(initCont);
             domConstruct.destroy('initError_container');
         }
 
-
+        /* This function checks the current IBM Connection Cloud organization ID. All users of the same organization
+         * will be using the same orgID. If that's the case then the client entry already exists. Otherwise create it. */
         function checkOrg(_id) {
             xhr("api/clients/" + _id, {
                 handleAs: "json"
             }).then(function (data) {
-                // DEBUG
-                console.log(data);  // dump incoming data
-
+                /* DEBUG
+                 * console.log(data); */
                 if ('_id' in data) {
-                    console.log('exists ok');
+                    /* DEBUG
+                     * console.log('Org exists ok'); */
                     rootElement.style.display="block";
-                    main(data.efrontApiKey, data.efrontHost);
+                    main(data.efrontApiKey, data.efrontHost, conn_uid, conn_name, conn_email);
                 }
-                else { // Prompt to enter auth info
-                    console.log('No configuration found! - ');
+                else {
+                    /* Prompt to enter auth info
+                     * console.log('No configuration found! - '); */
                     buildConfButton();
                     setupButtonHandler();
                 }
                 hostnamedom.value = '';
                 apikeydom.value = '';
                 myDialog.hide();
-                // Do something with the handled data
+                /* Do something with the handled data */
             }, function (err) {
-                console.log(err);
                 myDialog.hide();
-                // Handle the error condition
+                /* Handle the error condition */
             });
         }
 
-
-
-//        dom.byId('setup').on('click', function () {
-//            console.log('clicked the update button');
-//
-//        });
-//        document.getElementById("setup").addEventListener("click", function (ev) {
-//            ev.preventDefault();
-//            if (domClass.contains(this, 'disabled')) {
-//                return;
-//            }
-//            myDialog.show();
-//        });
-//        updateCredentials
-
-
-        checkOrg(_id);
-//        if (!returnValue){
-////            return 0;
-//        }
+        /* Get data from the IBM Connections cloud */
+        ready(function(){
+            try {
+                window.addEventListener('message', function(event) {
+                    console.log('Got msg', event.data);
+                    var connectionsData = JSON.stringify(event.data, null, 2);
+                    _id = connectionsData.user.orgId;
+                    conn_uid = connectionsData.user.userId;
+                    conn_name = connectionsData.user.displayName;
+                    conn_email = connectionsData.user.email;
+                    conn_rights = connectionsData.user.canPersonalize;
+                    console.log(connectionsData);
+                    checkOrg(_id);
+                }, false);
+            } catch (e) {
+                console.log(e);
+            }
+            parent.postMessage('appReady', "*");
+        });
+//        checkOrg(_id);
 
         // -------------------------------------------------------------------------------------------------------------
 
-
         // This is only called once we've got the proper configuration credentials
-        function main(key, url){
+        function main(key, url, uid, name, email){
             console.log('key received is: ' + key);
             console.log('host received is: ' + url);
 //            domConstruct.empty(rootElement.id);
@@ -401,9 +349,9 @@
             /* Get the IBM connections user profile. If the email matches anyone against the eFront database, then that
              * user is used. Otherwise a new user is created using the IBM connections userid as the username. */
             try {
-                var ibmUID = "22632187";
-                var ibmUserEmail = "stratis.konstantinos@gmail.com";
-                var ibmDisplayName = "Konstantinos Stratis";
+                var ibmUID = uid;
+                var ibmUserEmail = email;
+                var ibmDisplayName = name;
                 // EDIT
     //            var ibmUserProfile = this.iContext.getUserProfile();
     //            var ibmUID = ibmUserProfile.getItemValue('userid');
@@ -553,8 +501,8 @@
                 var homebutton = domConstruct.toDom("<a id='gohome' target='_blank' title='eFront Dashboard' href='" + eFrontFullURL + "'><i class='fa fa-home fa-2x'></i></a>");
                 domConstruct.place(homebutton, "homebutton");
                 if (data.courseList.length) {
-    //                var table = domConstruct.toDom("<div id='table-wrapper'><div><table cellspacing='0' class='course_style'><tbody id='efront_rows' class='course_style'></tbody></table></div></div>");
-                    var table = domConstruct.toDom("<div id='table-wrapper'><div id='table-scroll'><table cellspacing='0' class='course_style'><tbody id='efront_rows' class='course_style'></tbody></table></div></div>");
+                    var table = domConstruct.toDom("<div id='table-wrapper'><div><table cellspacing='0' class='course_style'><tbody id='efront_rows' class='course_style'></tbody></table></div></div>");
+//                    var table = domConstruct.toDom("<div id='table-wrapper'><div id='table-scroll'><table cellspacing='0' class='course_style'><tbody id='efront_rows' class='course_style'></tbody></table></div></div>");
                     domConstruct.place(table, "efront_data");
                     data.courseList.forEach(function (course) {
                         var courseFullURL = courseURL + course.id;

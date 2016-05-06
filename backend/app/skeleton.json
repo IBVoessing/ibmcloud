@@ -1,0 +1,28 @@
+{
+  "name": "eFrontPro",
+  "description": "eFrontPro for IBM Cloud Connections",
+  "type": "community_widget",
+  "urls": {},
+  "payload": {
+    "defId": "eFrontPro widget",
+    "showInPalette": "true",
+    "primaryWidget": "true",
+    "modes": "view",
+    "themes": "wpthemeThinwpthemeNarrowwpthemeWidewpthemeBanner",
+    "url": "https://apps.na.collabserv.com/connections/resources/web/com.ibm.social.urliWidget.web.resources/widget/urlWidget.xml",
+    "itemSet": [
+      {
+        "value": "https://conf.efrontlearning.net/index.html",
+        "name": "url"
+      },
+      {
+        "value": "100%",
+        "name": "width"
+      },
+      {
+        "value": "400px",
+        "name": "height"
+      }
+    ]
+  }
+}

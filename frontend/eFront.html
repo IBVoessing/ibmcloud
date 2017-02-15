@@ -4,7 +4,7 @@
     <title>eFrontPro v2.0</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css">
     <!-- This one needs to get in production mode-->
-    <!--<link rel="stylesheet" href="https://rawgit.com/IBVoessing/ibmcloud/master/assets/css/eFront.css">-->
+    <!--<link rel="stylesheet" href="https://rawgit.com/IBVoessing/ibmcloud/master/frontend/assets/css/eFront.css">-->
     <style>
         #table-scroll::-webkit-scrollbar {
             width: 8px;
@@ -190,14 +190,14 @@
     <div id="headContainer">
         <div id="title">
             <h2 style="color: #4D82B8;font-weight:500;">My Training&nbsp;
-                <img id="open_book" style="vertical-align: middle;" src="https://cdn.rawgit.com/IBVoessing/ibmcloud/master/assets/img/open_book_vector.svg"></h2>
+                <img id="open_book" style="vertical-align: middle;" src="https://cdn.rawgit.com/IBVoessing/ibmcloud/master/frontend/assets/img/open_book_vector.svg"></h2>
         </div>
         <div id="homebutton"></div>
     </div>
     <hr class="horizontalRuler">
     <div id="efront_data"></div>
 </div>
-<script src="https://cdn.rawgit.com/IBVoessing/ibmcloud/master/assets/js/progressbar.min.js"></script>
+<script src="https://cdn.rawgit.com/IBVoessing/ibmcloud/master/frontend/assets/js/progressbar.min.js"></script>
 <script data-dojo-config="async: 1" src="//ajax.googleapis.com/ajax/libs/dojo/1.10.4/dojo/dojo.js"></script>
 <script>
     require([
@@ -404,7 +404,7 @@
                 domConstruct.place(table, "efront_data");
                 data.courseList.forEach(function (course) {
                     var courseFullURL = courseURL + course.id;
-                    var columnA = "<tr><td><div id='eFrontColumn'><a title='Open course \"" + course.formatted_name + "\"' target='_blank' href=" + courseFullURL + ">" + "<img src='https://cdn.rawgit.com/IBVoessing/ibmcloud/master/assets/img/book.svg' width='32' height='32' alt='[eFront Course]' id='c_pic'/><span id='c_description'><strong>" + course.formatted_name + "</strong></span></div></a></td></div>";
+                    var columnA = "<tr><td><div id='eFrontColumn'><a title='Open course \"" + course.formatted_name + "\"' target='_blank' href=" + courseFullURL + ">" + "<img src='https://cdn.rawgit.com/IBVoessing/ibmcloud/master/frontend/assets/img/book.svg' width='32' height='32' alt='[eFront Course]' id='c_pic'/><span id='c_description'><strong>" + course.formatted_name + "</strong></span></div></a></td></div>";
                     var columnB = "<td style='text-align: center;'><div class='progressBars' id='" + course.id + "'><!--<span class='progress_percentage' style='width: 100%; text-align:center;'>N/A YET</span>--></div></td>";
                     var columnC = "<td class='link' align='center'><a title='Open course \"" + course.formatted_name + "\"' target='_blank' href='" + courseFullURL + "' class='gotocourse'><i class='fa fa-arrow-right fa-2x gotocourseicon'></i></a></td></tr>";
                     var columns = columnA + columnB + columnC;
@@ -430,7 +430,7 @@
                 });
             }
             else{ /* In case a user has no courses */
-                var nocoursemsg = domConstruct.toDom("<div class='nocourses' style='display: inline-flex;'><img src='https://cdn.rawgit.com/IBVoessing/ibmcloud/master/assets/img/noCourses.svg' width='64' height='64' alt='[eFront No Course]' style='margin: auto;'/>&nbsp;<h1 style='text-align: center;color: #454545;'>You don't have any courses yet.</h1></div><div id='fetch' style='text-align: center;'>Go to <a target='_blank' href='" + eFrontFullURL + "/go/catalog/'>eFront</a> and get some now!</div>");
+                var nocoursemsg = domConstruct.toDom("<div class='nocourses' style='display: inline-flex;'><img src='https://cdn.rawgit.com/IBVoessing/ibmcloud/master/frontend/assets/img/noCourses.svg' width='64' height='64' alt='[eFront No Course]' style='margin: auto;'/>&nbsp;<h1 style='text-align: center;color: #454545;'>You don't have any courses yet.</h1></div><div id='fetch' style='text-align: center;'>Go to <a target='_blank' href='" + eFrontFullURL + "/go/catalog/'>eFront</a> and get some now!</div>");
                 domConstruct.place(nocoursemsg, "efront_data");
                 /*console.log('User has no courses');*/
             }

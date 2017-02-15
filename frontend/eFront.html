@@ -270,14 +270,14 @@
         /* Get the IBM connections user profile. If the email matches anyone against the eFront database, then that
          * user is used. Otherwise a new user is created using the IBM connections userid as the username. */
         try {
-            var ibmUID = "22632187";
-            var ibmUserEmail = "stratis.konstantinos@gmail.com";
-            var ibmDisplayName = "Konstantinos Stratis";
+            //var ibmUID = "22632187";
+            //var ibmUserEmail = "stratis.konstantinos@gmail.com";
+            //var ibmDisplayName = "Konstantinos Stratis";
             // EDIT
-//            var ibmUserProfile = this.iContext.getUserProfile();
-//            var ibmUID = ibmUserProfile.getItemValue('userid');
-//            var ibmUserEmail = ibmUserProfile.getItemValue('email');
-//            var ibmDisplayName = ibmUserProfile.getItemValue('displayName');
+            var ibmUserProfile = this.iContext.getUserProfile();
+            var ibmUID = ibmUserProfile.getItemValue('userid');
+            var ibmUserEmail = ibmUserProfile.getItemValue('email');
+            var ibmDisplayName = ibmUserProfile.getItemValue('displayName');
         }
         catch (e){ /* If we can't retrieve that, something is really wrong and the plugin should abort immediatelly */
             errorHandler('A critical error occured while retrieving the system user: ' + e, true);

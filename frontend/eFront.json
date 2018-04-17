@@ -12,7 +12,7 @@
     "url": "https://apps.na.collabserv.com/connections/resources/web/com.ibm.social.urliWidget.web.resources/widget/urlWidget.xml",
     "itemSet": [
       {
-        "value": "https://rawgit.com/kstratis/ibmcloud/master/eFront.html",
+        "value": "https://rawgit.com/kstratis/ibmcloud/master/frontend/eFront.html",
         "name": "url"
       },
       {
